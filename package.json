@@ -2,7 +2,7 @@
   "name": "barru-info",
   "version": "0.1.0",
   "private": true,
-"scripts": {
+  "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -20,10 +20,10 @@
     "clsx": "^2.1.1",
     "lucia": "^3.2.2",
     "lucide-react": "^0.562.0",
-    "next": "15.1.3",
+    "next": "^16.1.1",
     "oslo": "^1.2.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-hook-form": "^7.69.0",
     "react-markdown": "^10.1.0",
     "tailwind-merge": "^3.4.0",
