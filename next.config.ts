@@ -1,18 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
-  
-  // 1. Abaikan Error TypeScript saat Build
+  // Abaikan error TypeScript biar bisa deploy
   typescript: {
     ignoreBuildErrors: true,
   },
-  
-  // 2. Abaikan Error ESLint saat Build
+  // Abaikan error ESLint
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Settingan lain
+  reactCompiler: true,
 };
 
 export default nextConfig;
