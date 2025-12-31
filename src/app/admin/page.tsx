@@ -38,7 +38,8 @@ export default async function AdminDashboard() {
         </div>
 
         {/* --- TOMBOL AKSI HEADER --- */}
-        <div className="flex w-full md:w-auto gap-2">
+        {/* Tambahkan flex-wrap agar tombol turun ke baris baru jika tidak muat */}
+        <div className="flex flex-wrap gap-2 items-center mb-2 md:mb-0">
           
           {/* --- TOMBOL KHUSUS OWNER --- */}
           {user.role === "OWNER" && (
@@ -50,10 +51,9 @@ export default async function AdminDashboard() {
           )}
 
           <Link href="/admin/posts/new" className="flex-1 md:flex-none">
-            <Button className="w-full md:w-auto">+ Tulis Berita</Button>
+            <Button className="w-full md:w-auto bg-blue-900 text-white">+ Tulis Berita</Button>
           </Link>
 
-          {/* TOMBOL PENGATURAN (BARU) */}
           <Link href="/admin/settings" className="flex-1 md:flex-none">
             <Button variant="secondary" className="w-full md:w-auto border">
               Ganti Pass
@@ -61,7 +61,9 @@ export default async function AdminDashboard() {
           </Link>
 
           <form action={logout} className="flex-1 md:flex-none">
-            <Button variant="outline" type="submit" className="w-full md:w-auto">Logout</Button>
+            <Button variant="outline" type="submit" className="w-full md:w-auto">
+              Logout
+            </Button>
           </form>
         </div>
       </div>
@@ -89,8 +91,10 @@ export default async function AdminDashboard() {
           ) : (
             <div className="space-y-6">
               {media.posts.map((post) => (
-                <div key={post.id} className="flex flex-col md:flex-row justify-between md:items-center border-b pb-4 last:border-0 last:pb-0 gap-4">
-                  
+                <div
+                  key={post.id}
+                  className="flex flex-col md:flex-row justify-between md:items-center border-b pb-4 last:border-0 last:pb-0 gap-4"
+                >
                   {/* KIRI: Judul & Tanggal */}
                   <div className="space-y-1">
                     <p className="font-medium text-lg leading-tight">{post.title}</p>
@@ -113,9 +117,9 @@ export default async function AdminDashboard() {
 
                     <form action={deletePost} className="flex-1 md:flex-none">
                       <input type="hidden" name="postId" value={post.id} />
-                      <Button 
-                        variant="destructive" 
-                        size="sm" 
+                      <Button
+                        variant="destructive"
+                        size="sm"
                         type="submit"
                         className="w-full md:w-auto"
                       >

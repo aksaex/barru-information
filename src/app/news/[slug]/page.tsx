@@ -47,7 +47,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
     <div className="min-h-screen bg-white">
         <nav className="border-b h-16 flex items-center px-4 md:px-8 bg-white sticky top-0 z-10">
             <Link href="/" className="font-bold text-xl flex items-center gap-2">
-                ← Kembali ke Barru<span className="text-blue-600">Info</span>
+                Kembali
             </Link>
         </nav>
 

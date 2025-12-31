@@ -30,12 +30,12 @@ export default async function SuperAdminPage() {
       media: {
         include: {
           _count: {
-            select: { posts: true } // Hitung posts DI DALAM Media
+            select: { posts: true }
           }
         }
       }
     },
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: "desc" }
   });
 
   return (
@@ -46,40 +46,48 @@ export default async function SuperAdminPage() {
           <p className="text-red-700">Tindakan di sini permanen.</p>
         </div>
         <Link href="/admin">
-            <Button variant="outline">Kembali</Button>
+          <Button variant="outline">Kembali</Button>
         </Link>
       </div>
 
       <Card className="border-red-200">
         <CardHeader>
-            <CardTitle>Media Terdaftar ({allUsers.length})</CardTitle>
+          <CardTitle>Media Terdaftar ({allUsers.length})</CardTitle>
         </CardHeader>
         <CardContent>
-            {allUsers.length === 0 ? (
-                <p>Belum ada user.</p>
-            ) : (
-                <div className="space-y-4">
-                    {allUsers.map((u) => (
-                        <div key={u.id} className="flex justify-between items-center border-b pb-4 last:border-0 last:pb-0">
-                            <div>
-                                <p className="font-bold text-lg">{u.media?.name || "Tanpa Nama Media"}</p>
-                                <p className="text-sm text-muted-foreground">{u.email}</p>
-                                <p className="text-xs text-slate-500 mt-1">
-                                    {/* PERBAIKAN DI SINI: Ambil count dari dalam media */}
-                                    Total Berita: {u.media?._count?.posts || 0}
-                                </p>
-                            </div>
-                            
-                            <form action={deleteUserByOwner}>
-                                <input type="hidden" name="targetUserId" value={u.id} />
-                                <Button variant="destructive" size="sm">
-                                    Hapus Media & User
-                                </Button>
-                            </form>
-                        </div>
-                    ))}
+          {allUsers.length === 0 ? (
+            <p>Belum ada user.</p>
+          ) : (
+            <div className="space-y-4">
+              {allUsers.map((u) => (
+                <div
+                  key={u.id}
+                  className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 border rounded-lg"
+                >
+                  {/* Bagian Kiri: Info User */}
+                  <div className="w-full sm:w-auto">
+                    <p className="font-bold text-lg">{u.media?.name || "Tanpa Nama Media"}</p>
+                    <p className="text-sm text-gray-600 truncate max-w-[200px]">{u.email}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Total Berita: {u.media?._count?.posts || 0}
+                    </p>
+                  </div>
+
+                  {/* Bagian Kanan: Tombol */}
+                  <form action={deleteUserByOwner} className="w-full sm:w-auto">
+                    <input type="hidden" name="targetUserId" value={u.id} />
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="w-full sm:w-auto bg-red-600 hover:bg-red-700"
+                    >
+                      Hapus Media & User
+                    </Button>
+                  </form>
                 </div>
-            )}
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
