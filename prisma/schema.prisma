@@ -9,21 +9,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// prisma/schema.prisma
+// --- AUTH & USER ---
 
 model User {
   id        String    @id
   email     String    @unique
   password  String    // Hashed password
-  // TAMBAHAN BARU: Defaultnya semua orang adalah ADMIN biasa
+  
+  // Defaultnya semua orang adalah ADMIN biasa, OWNER hanya satu
   role      String    @default("ADMIN") 
   
   sessions  Session[]
   media     Media?
   createdAt DateTime  @default(now())
 }
-
-// ... (sisanya biarkan sama)
 
 model Session {
   id        String   @id
@@ -32,20 +31,18 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// --- FITUR UTAMA: PORTAL BERITA ---
+// --- PORTAL BERITA ---
 
-// prisma/schema.prisma
-
-// 1. UPDATE MODEL MEDIA
 model Media {
   id          String   @id @default(cuid())
   name        String
   slug        String   @unique
   description String?
-  logoUrl     String?
+  
+  // Nanti bisa dipakai untuk upload logo media
+  logoUrl     String?  
   
   ownerId     String   @unique
-  // TAMBAHKAN onDelete: Cascade DI SINI
   owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   
   posts       Post[]
@@ -54,23 +51,24 @@ model Media {
   updatedAt   DateTime @updatedAt
 }
 
-// 2. UPDATE MODEL POST
 model Post {
-  id            String   @id @default(cuid())
+  id            String     @id @default(cuid())
   title         String
-  slug          String   @unique
-  excerpt       String?  @db.Text
-  content       String   @db.Text
-  coverImageUrl String?
+  slug          String     @unique
+  excerpt       String?    @db.Text
+  content       String     @db.Text
+  
+  // INI FIELD PENTING: Untuk menyimpan link gambar Cloudinary
+  coverImageUrl String?    
+  
   status        PostStatus @default(DRAFT)
   
   mediaId       String
-  // TAMBAHKAN onDelete: Cascade DI SINI JUGA
-  media         Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  media         Media      @relation(fields: [mediaId], references: [id], onDelete: Cascade)
   
   publishedAt   DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   
   @@index([slug])
   @@index([mediaId])
