@@ -12,7 +12,7 @@ export default function SettingsPage() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Ganti Password</CardTitle>
-          <CardDescription>Amankan akun Owner kamu sekarang.</CardDescription>
+          <CardDescription>Amankan akun kamu sekarang.</CardDescription>
         </CardHeader>
         <CardContent>
           <form action={changePassword} className="space-y-4">
@@ -29,7 +29,7 @@ export default function SettingsPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="newPassword">Password Baru (Yang Kuat!)</Label>
+              <Label htmlFor="newPassword">Password Baru Yang Kuat</Label>
               <Input 
                 name="newPassword" 
                 id="newPassword" 
