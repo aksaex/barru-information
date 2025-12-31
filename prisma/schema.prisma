@@ -1,0 +1,82 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// prisma/schema.prisma
+
+model User {
+  id        String    @id
+  email     String    @unique
+  password  String    // Hashed password
+  // TAMBAHAN BARU: Defaultnya semua orang adalah ADMIN biasa
+  role      String    @default("ADMIN") 
+  
+  sessions  Session[]
+  media     Media?
+  createdAt DateTime  @default(now())
+}
+
+// ... (sisanya biarkan sama)
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// --- FITUR UTAMA: PORTAL BERITA ---
+
+// prisma/schema.prisma
+
+// 1. UPDATE MODEL MEDIA
+model Media {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  logoUrl     String?
+  
+  ownerId     String   @unique
+  // TAMBAHKAN onDelete: Cascade DI SINI
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  posts       Post[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 2. UPDATE MODEL POST
+model Post {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  excerpt       String?  @db.Text
+  content       String   @db.Text
+  coverImageUrl String?
+  status        PostStatus @default(DRAFT)
+  
+  mediaId       String
+  // TAMBAHKAN onDelete: Cascade DI SINI JUGA
+  media         Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  
+  publishedAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([slug])
+  @@index([mediaId])
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
